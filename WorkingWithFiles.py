@@ -46,7 +46,7 @@ def process_excel_report(csv_file, output_dir):
     ws["E2"] = f"=SUM(D2:D{last_row})"
     wb.save(excel_file)
 
-    total_sum = df["стоимость"].sum()
+    total_sum = df["Стоимость"].sum()
     print(f"Создан Excel отчет: {excel_file}")
     return excel_file, total_sum
 
@@ -96,24 +96,19 @@ def fill_pdf_template(template_path, total_sum, output_dir):
 
 
 def main():
-    print("ОТЧЕТНЫЙ РОБОТ")
-
     output_dir = input("Введите путь для сохранения файлов (Enter для текущей директории): ").strip()
     if not output_dir:
         output_dir = os.getcwd()
     os.makedirs(output_dir, exist_ok=True)
 
     try:
-        #CSV
         csv_file = create_csv_example(os.path.join(output_dir, "исходные_данные.csv"))
 
-        #Excel
         excel_file, total_sum = process_excel_report(csv_file, output_dir)
 
-        #Word
         word_file = create_word_report(total_sum, output_dir)
 
-        #PDF (требуется готовый шаблон blank.pdf в той же папке)
+        #(требуется готовый шаблон blank.pdf в той же папке)
         template_path = os.path.join(output_dir, "blank.pdf")
         if not os.path.exists(template_path):
             raise FileNotFoundError("Не найден шаблон blank.pdf! Поместите его в папку вывода.")
